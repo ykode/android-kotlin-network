@@ -1,0 +1,102 @@
+// The buildscript part we include all our build plugins here
+
+buildscript {
+
+  // The latest "stable" kotlin version
+  ext.kotlin_version = "1.0.0-beta-1038"
+  ext.android_sdk_version = 23
+
+    // We specify the repositories that host the dependencies
+    repositories {
+      jcenter()
+      mavenCentral()
+    }
+
+  /* The Dependencies:
+   *  - Android Gradle plugin
+   *  - Kotlin Gradle plugin
+   *  - Kotlin Android Extensions
+   */
+  dependencies {
+    classpath "com.android.tools.build:gradle:1.3.1"
+    classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+    classpath "org.jetbrains.kotlin:kotlin-android-extensions:$kotlin_version"
+  }
+}
+
+// apply our plugins here
+apply plugin:"com.android.application"
+apply plugin:"kotlin-android"
+
+// Global repositories
+repositories {
+  jcenter()
+  mavenCentral()
+  maven {
+    url "http://repository.jetbrains.com/all" // Jetbrain's own maven
+  }
+}
+
+// Android build settings
+android {
+  compileSdkVersion android_sdk_version
+  buildToolsVersion "23.0.1" // check from your SDK Manager
+
+  defaultConfig {
+    applicationId "com.ykode.research.RxNetSample" // the AppID for Google Play
+    minSdkVersion 21    // We only do Lollipop+
+    targetSdkVersion android_sdk_version
+    versionCode 1       // The build number
+    versionName "1.0"   // The version used for marketing purposes
+  }
+
+  // make it compatible to Java 6
+  compileOptions {
+    sourceCompatibility JavaVersion.VERSION_1_6
+    targetCompatibility JavaVersion.VERSION_1_6
+  }
+
+  signingConfigs {
+    release {
+        storeFile file(System.getenv("KEYSTORE"))
+        storePassword System.getenv("KEYSTORE_PASSWORD")
+        keyAlias System.getenv("KEY_ALIAS")
+        keyPassword System.getenv("KEY_PASSWORD")
+    }
+  }
+
+  // progruard settings for release build
+  buildTypes {
+    release {
+      minifyEnabled true
+      proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+      signingConfig signingConfigs.release 
+    }
+  }
+
+  // Where we save the source code
+  sourceSets {
+    main.kotlin.srcDirs += "src/main/kotlin"
+  }
+  
+  lintOptions {
+    lintConfig file("./lint.xml")
+  }
+}
+
+// Our app global dependencies
+dependencies {
+  compile fileTree(dir: 'libs', include: ['*.jar'])
+  compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+  
+  compile 'io.reactivex:rxandroid:1.0.1' // RxAndroid providing Android Scheduler
+  compile 'io.reactivex:rxjava:1.0.14'   // RxJava
+  compile 'com.jakewharton.rxbinding:rxbinding-kotlin:0.3.0' // RxBinding
+
+  compile 'org.jetbrains.anko:anko-sdk23:0.7.2' // Anko
+  compile 'com.squareup.retrofit:retrofit:2.0.0-beta2' // Retrofit
+
+  compile 'com.squareup.retrofit:converter-gson:2.0.0-beta2' // Gson Converter
+  compile'com.google.code.gson:gson:2.4' // Gson
+  compile 'com.squareup.retrofit:adapter-rxjava:2.0.0-beta2' // provides RxJava Adapters
+}

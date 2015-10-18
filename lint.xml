@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<lint>
+  <!-- Suppressing Warning For minSdk -->
+  <issue id="UnusedAttribute" severity="ignore" />
+  <issue id="UnusedResources" severity="ignore" />
+  <issue id="InvalidPackage">
+    <ignore regexp=".*okio.*" />
+    <ignore regexp=".*retrofit.*" />
+  </issue>
+</lint>

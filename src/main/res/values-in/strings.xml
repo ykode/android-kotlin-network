@@ -1,0 +1,7 @@
+<resources>
+  <string name="app_name">Retrofit RxContoh</string>
+  <string name="user_name">Nama Pengguna</string>
+  <string name="email">Surel</string>
+  <string name="register">Daftar</string>
+</resources>
+

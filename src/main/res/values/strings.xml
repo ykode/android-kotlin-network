@@ -1,0 +1,7 @@
+<resources>
+  <string name="app_name">Retrofit RxSample</string>
+  <string name="user_name">User Name</string>
+  <string name="email">Email</string>
+  <string name="register">Register</string>
+</resources>
+
